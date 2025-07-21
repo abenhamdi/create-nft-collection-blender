@@ -1,23 +1,15 @@
-# 🖼️ Create NFT Collection with Blender + Python
+# 🖼️ Create NFT Collection – JavaScript + Blender (Asset Generation)
 
-Un projet qui permet de générer automatiquement une collection NFT unique à l’aide de Blender (modélisation 3D) et Python (automatisation). Ce script automatise la création, le rendu et l'export d'images NFT en 3D.
+Un projet JavaScript qui permet de générer automatiquement une collection NFT à partir de calques d'images, en combinant différents traits visuels (ex : fond, yeux, accessoires...) selon une logique de rareté, puis d’enregistrer les métadonnées au format JSON.
 
 ---
 
 ## 🎯 Objectif
 
-* Générer des images NFT 3D en combinant des traits/modèles Blender.
-* Automatiser le rendu avec des scripts Python directement dans Blender.
-* Générer des métadonnées associées pour chaque NFT.
-* Préparer une collection complète prête à être mintée sur une blockchain.
-
----
-
-## 🧰 Technologies utilisées
-
-* **Blender** – logiciel de modélisation 3D open source
-* **Python 3.x** – scripting et automatisation
-* `bpy` – Blender Python API
+* Générer une collection d’images NFT de manière automatisée.
+* Créer les **métadonnées associées** (standard ERC-721 / OpenSea).
+* Définir la **rareté** et les combinaisons possibles entre les calques.
+* Exporter les images finales au format `.png` ainsi que les fichiers `.json`.
 
 ---
 
@@ -26,79 +18,96 @@ Un projet qui permet de générer automatiquement une collection NFT unique à l
 ```
 create-nft-collection-blender/
 │
-├── assets/                       # Répertoire contenant les objets et éléments 3D
-│
-├── blender_scripts/
-│   ├── generate_nfts.py         # Script principal de génération
-│   ├── render_settings.py       # Configuration du rendu Blender
-│   └── utils.py                 # Fonctions utilitaires (random, combinaison, etc.)
+├── layers/                      # Dossiers contenant les calques (ex: eyes, background...)
+│   ├── background/
+│   ├── body/
+│   └── accessories/
 │
 ├── output/
-│   ├── images/                  # Dossier de sortie pour les NFT générés
-│   └── metadata/                # Métadonnées JSON pour chaque NFT
+│   ├── images/                  # Images NFT générées
+│   └── metadata/                # Métadonnées JSON
 │
+├── config.js                    # Configuration des couches et rareté
+├── index.js                     # Script principal de génération
+├── package.json                 # Dépendances Node.js
 └── README.md
 ```
 
 ---
 
-## 🚀 Lancer la génération
+## 🚀 Installation & exécution
 
-### 1. Préparer vos assets 3D
-
-Ajoutez vos modèles `.blend`, objets ou groupes de calques (cheveux, yeux, accessoires...) dans le dossier `assets/`.
-
-Organisez-les par catégorie si nécessaire (ex : `eyes/`, `hats/`, `backgrounds/`...).
-
-### 2. Ouvrir Blender avec scripting Python
-
-Lancez Blender depuis le terminal avec l'exécution du script :
+### 1. Cloner le dépôt
 
 ```bash
-blender --background --python blender_scripts/generate_nfts.py
+git clone https://github.com/abenhamdi/create-nft-collection-blender.git
+cd create-nft-collection-blender
 ```
 
-### 3. Résultat
+### 2. Installer les dépendances
 
-* Les **images rendues** sont stockées dans `output/images/`
-* Les **métadonnées JSON** associées à chaque NFT sont dans `output/metadata/`
+```bash
+npm install
+```
+
+### 3. Lancer la génération de la collection NFT
+
+```bash
+node index.js
+```
+
+---
+
+## ⚙️ Configuration
+
+Le fichier `config.js` vous permet de :
+
+* Définir les **couches** à superposer (ordre, rareté)
+* Spécifier le **nombre total d’images** à générer
+* Générer les **métadonnées JSON** compatibles avec IPFS / OpenSea
+* Personnaliser les noms, attributs et formats
 
 ---
 
 ## 🧠 Fonctionnement
 
-* Combine aléatoirement des éléments de différentes catégories
-* Crée un personnage unique à chaque exécution
-* Rend chaque image avec des angles de caméra définis
-* Génère les métadonnées (`name`, `attributes`, `image`) compatibles avec les standards NFT (ex : OpenSea)
+* Chaque image est une **combinaison aléatoire** de calques visuels.
+* Les couches sont superposées dans un ordre défini (ex: background → body → eyes → accessoires).
+* Une logique de **rareté pondérée** permet de générer des NFT plus ou moins rares.
+* Le système vérifie qu’aucune duplication ne survient dans les images générées.
+* Les **métadonnées JSON** incluent :
+
+  * `name`, `description`, `image`, `attributes`…
 
 ---
 
-## 📌 Pré-requis
+## ✅ Résultat
 
-* [Blender](https://www.blender.org/) installé
-* Python intégré dans Blender (via `bpy`)
-* Connaissances de base en structure de calques Blender
-
----
-
-## 📦 TODO & améliorations possibles
-
-* Interface utilisateur graphique (via Add-on Blender)
-* Support de la raréfaction (rare items, poids des traits)
-* Génération de vidéos NFT (via animation)
-* Intégration d’un smart contract pour mint automatique
-* Hébergement IPFS ou Arweave
+* 🎨 Images générées dans `output/images/`
+* 🧾 Métadonnées compatibles avec les standards NFT dans `output/metadata/`
+* Prêt pour **upload sur IPFS**, **mint sur Ethereum**, ou **OpenSea**
 
 ---
 
-## 🎨 Exemple de rendu
+## 🔧 Améliorations possibles
 
-*(à ajouter : captures d’écran ou exemples de NFT générés)*
+* Génération de GIFs ou vidéos
+* Intégration avec Pinata / IPFS pour uploader automatiquement
+* Interface visuelle (ex: dashboard React/Next.js)
+* Gestion avancée de la raréfaction (exclusion de combinaisons)
+* Export automatique vers smart contracts
+
+---
+
+## 📦 Dépendances clés
+
+* `canvas` – dessin et manipulation d'images
+* `fs` – gestion des fichiers
+* `path` – chemins dynamiques
+* `uuid` – génération d’identifiants uniques
 
 ---
 
 ## 👤 Auteur
 
 * **abenhamdi** – [@abenhamdi](https://github.com/abenhamdi)
-
